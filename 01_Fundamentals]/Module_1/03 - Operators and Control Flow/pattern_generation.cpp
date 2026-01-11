@@ -13,9 +13,9 @@ void generateUpsideDownTriangle(int height, char symbol);
 void generateDiamond(int height, char symbol);
 void generateNumberPattern(int height); // Numbers don't use symbols
 void generateCustomPattern(int height, char symbol);
-void generateWordTriangle(string word);
-void generateWordPyramid(string word);
-void generateWordDiamond(string word);
+void generateWordTriangle(const string& word);
+void generateWordPyramid(const string& word);
+void generateWordDiamond(const string& word);
 
 int main() {
     cout << "=======================================" << endl;
@@ -54,7 +54,13 @@ int main() {
             
             string word;
             cout << "Enter a word for the pattern: ";
-            cin >> word;
+            cin.ignore(); // Clear input buffer
+            getline(cin, word);
+            
+            if (word.empty()) {
+                cout << "No word entered! Returning to main menu." << endl;
+                continue;
+            }
             
             switch (wordChoice) {
                 case 1: generateWordTriangle(word); break;
@@ -168,10 +174,11 @@ void generateUpsideDownTriangle(int height, char symbol) {
     }
 }
 
-void generateWordTriangle(string word) {
+void generateWordTriangle(const string& word) {
     cout << "\n--- Word Triangle made out of '" << word << "' ---" << endl;
 
-    for (int i = 0; i < word.length(); i++) {
+    int len = word.length();
+    for (int i = 0; i < len; i++) {
         for (int j = 0; j <= i; j++) {
             cout << word[j] << " ";
         }
@@ -179,7 +186,7 @@ void generateWordTriangle(string word) {
     }
 }
 
-void generateWordPyramid(string word) {
+void generateWordPyramid(const string& word) {
     cout << "\n--- Word Pyramid made out of '" << word << "' ---" << endl;
     
     int len = word.length();
@@ -197,7 +204,7 @@ void generateWordPyramid(string word) {
     }
 }
 
-void generateWordDiamond(string word) {
+void generateWordDiamond(const string& word) {
     cout << "\n--- Word Diamond made out of '" << word << "' ---" << endl;
     
     int len = word.length();
