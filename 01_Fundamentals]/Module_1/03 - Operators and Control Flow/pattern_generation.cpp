@@ -174,6 +174,7 @@ void generateUpsideDownTriangle(int height, char symbol) {
     }
 }
 
+// 7. Word Triangle - Builds a triangle pattern using characters from a word
 void generateWordTriangle(const string& word) {
     cout << "\n--- Word Triangle made out of '" << word << "' ---" << endl;
 
@@ -186,6 +187,7 @@ void generateWordTriangle(const string& word) {
     }
 }
 
+// 8. Word Pyramid - Creates a centered pyramid pattern using characters from a word
 void generateWordPyramid(const string& word) {
     cout << "\n--- Word Pyramid made out of '" << word << "' ---" << endl;
     
@@ -204,6 +206,7 @@ void generateWordPyramid(const string& word) {
     }
 }
 
+// 9. Word Diamond - Generates a diamond shape using characters from a word
 void generateWordDiamond(const string& word) {
     cout << "\n--- Word Diamond made out of '" << word << "' ---" << endl;
     
