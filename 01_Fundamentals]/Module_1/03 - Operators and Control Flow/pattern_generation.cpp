@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-
+// TODO: Create a pattern generation program with multiple pattern options and user-defined symbols or words.
 using namespace std;
 
 // --- Function Declarations (Blueprints) ---
@@ -136,6 +136,22 @@ void generateUpsideDownTriangle(int height, char symbol) {
         }
         cout << endl;
     }
+}
+
+void generateWordTriangle() {
+    string word;
+    cout << "Enter a word to 'Traiangulate': ";
+    cin >> word;
+    
+    cout << "\n--- Word Triangle made out of " << word << " ---" << endl;
+
+    for (int i = 0; i < word.length(); i++) {
+        for (int j = 0; j <= i; j++) {
+            cout << word[j] << " ";
+        }
+        cout << endl;
+    }
+
 }
 
 void printMenu() {
