@@ -1,1 +1,7 @@
 *.exe
+# Linux/Unix executables (no extension)
+pattern_generation
+interactive_calculator
+interactive_calculate_as_a_function
+conditions_lab
+practice_lab

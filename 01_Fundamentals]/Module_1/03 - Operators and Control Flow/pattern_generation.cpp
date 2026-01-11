@@ -1,17 +1,21 @@
 #include <iostream>
 #include <string>
-// TODO: Create a pattern generation program with multiple pattern options and user-defined symbols or words.
+// Pattern generation program with multiple pattern options and user-defined symbols or words.
 using namespace std;
 
 // --- Function Declarations (Blueprints) ---
 // Note: All functions now accept 'symbol' as a parameter
 void printMenu();
+void printWordPatternMenu();
 void generateRightTriangle(int height, char symbol);
 void generatePyramid(int height, char symbol);
 void generateUpsideDownTriangle(int height, char symbol);
 void generateDiamond(int height, char symbol);
 void generateNumberPattern(int height); // Numbers don't use symbols
 void generateCustomPattern(int height, char symbol);
+void generateWordTriangle(string word);
+void generateWordPyramid(string word);
+void generateWordDiamond(string word);
 
 int main() {
     cout << "=======================================" << endl;
@@ -28,12 +32,38 @@ int main() {
         printMenu();
 
         int choice;
-        cout << "Enter your choice (1-7): ";
+        cout << "Enter your choice (1-8): ";
         cin >> choice;
 
-        if (choice == 7) {
+        if (choice == 8) {
             exitProgram = true;
             cout << "Thank you for using the Pattern Generator!" << endl;
+            continue;
+        }
+
+        // Handle word patterns
+        if (choice == 7) {
+            printWordPatternMenu();
+            int wordChoice;
+            cout << "Enter your choice (1-4): ";
+            cin >> wordChoice;
+            
+            if (wordChoice == 4) {
+                continue; // Back to main menu
+            }
+            
+            string word;
+            cout << "Enter a word for the pattern: ";
+            cin >> word;
+            
+            switch (wordChoice) {
+                case 1: generateWordTriangle(word); break;
+                case 2: generateWordPyramid(word); break;
+                case 3: generateWordDiamond(word); break;
+                default:
+                    cout << "Invalid choice! Please enter 1-4." << endl;
+            }
+            cout << endl;
             continue;
         }
 
@@ -55,7 +85,7 @@ int main() {
             case 5: generateCustomPattern(height, symbol); break;
             case 6: generateUpsideDownTriangle(height, symbol); break;
             default:
-                cout << "Invalid choice! Please enter 1-7." << endl;
+                cout << "Invalid choice! Please enter 1-8." << endl;
         }
         cout << endl;
     }
@@ -138,12 +168,8 @@ void generateUpsideDownTriangle(int height, char symbol) {
     }
 }
 
-void generateWordTriangle() {
-    string word;
-    cout << "Enter a word to 'Traiangulate': ";
-    cin >> word;
-    
-    cout << "\n--- Word Triangle made out of " << word << " ---" << endl;
+void generateWordTriangle(string word) {
+    cout << "\n--- Word Triangle made out of '" << word << "' ---" << endl;
 
     for (int i = 0; i < word.length(); i++) {
         for (int j = 0; j <= i; j++) {
@@ -151,7 +177,58 @@ void generateWordTriangle() {
         }
         cout << endl;
     }
+}
 
+void generateWordPyramid(string word) {
+    cout << "\n--- Word Pyramid made out of '" << word << "' ---" << endl;
+    
+    int len = word.length();
+    for (int i = 0; i < len; i++) {
+        // Print spaces
+        for (int j = 0; j < len - i - 1; j++) {
+            cout << " ";
+        }
+        // Print characters
+        for (int j = 0; j <= i; j++) {
+            cout << word[j];
+            if (j < i) cout << " ";
+        }
+        cout << endl;
+    }
+}
+
+void generateWordDiamond(string word) {
+    cout << "\n--- Word Diamond made out of '" << word << "' ---" << endl;
+    
+    int len = word.length();
+    
+    // Top half (including middle)
+    for (int i = 0; i < len; i++) {
+        // Print spaces
+        for (int j = 0; j < len - i - 1; j++) {
+            cout << " ";
+        }
+        // Print characters
+        for (int j = 0; j <= i; j++) {
+            cout << word[j];
+            if (j < i) cout << " ";
+        }
+        cout << endl;
+    }
+    
+    // Bottom half
+    for (int i = len - 2; i >= 0; i--) {
+        // Print spaces
+        for (int j = 0; j < len - i - 1; j++) {
+            cout << " ";
+        }
+        // Print characters
+        for (int j = 0; j <= i; j++) {
+            cout << word[j];
+            if (j < i) cout << " ";
+        }
+        cout << endl;
+    }
 }
 
 void printMenu() {
@@ -162,5 +239,14 @@ void printMenu() {
     cout << "4. Number Pattern" << endl;
     cout << "5. Custom Pattern" << endl;
     cout << "6. Upside-down Triangle" << endl;
-    cout << "7. Exit" << endl;
+    cout << "7. Word Patterns (Multiple Options)" << endl;
+    cout << "8. Exit" << endl;
+}
+
+void printWordPatternMenu() {
+    cout << "\n--- Word Pattern Options ---" << endl;
+    cout << "1. Word Triangle" << endl;
+    cout << "2. Word Pyramid" << endl;
+    cout << "3. Word Diamond" << endl;
+    cout << "4. Back to Main Menu" << endl;
 }
