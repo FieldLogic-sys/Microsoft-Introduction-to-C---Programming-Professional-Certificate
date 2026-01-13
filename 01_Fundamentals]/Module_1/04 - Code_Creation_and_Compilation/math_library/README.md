@@ -9,29 +9,27 @@ This project marks a transition from single-file scripting to **modular software
 math_library/
   ├── main.cpp           # Entry point and User Interface (Menu Logic)
   ├── ui_constants.h     # Terminal color codes for UX
-  ├── basic_math.h       # Declarations for arithmetic
-  ├── basic_math.cpp     # Implementations for arithmetic
-  ├── advanced_math.h    # Declarations for powers/roots
-  ├── advanced_math.cpp  # Implementations for powers/roots
-  ├── geometry.h         # Declarations for area/volume
-  └── geometry.cpp       # Implementations for area/volume
+  ├── basic_math.h/cpp   # Arithmetic operations
+  ├── advanced_math.h/cpp# Powers, roots, and absolute values
+  ├── geometry.h/cpp     # Circle and rectangle calculations
+  ├── statistics.h/cpp   # Array-based mean, min, and max calculations
+  ```
+c
 
+  ## ✨ Features
+**Interactive Menu**: A do-while loop combined with a switch statement allows users to navigate the library without restarting the program.
 
+**Dynamic User Input**: Replaced hard-coded test values with std::cin to allow real-time calculations.
 
-  ✨ Features
-Interactive Menu: A do-while loop combined with a switch statement allows users to navigate the library without restarting the program.
+**Input Validation**: Logic to handle invalid menu selections and prevent infinite loops on bad input.
 
-Dynamic User Input: Replaced hard-coded test values with std::cin to allow real-time calculations.
+**Color-Coded UI**: Utilized ANSI escape codes via a dedicated constants header to provide visual feedback.
 
-Input Validation: Logic to handle invalid menu selections and prevent infinite loops on bad input.
-
-Color-Coded UI: Utilized ANSI escape codes via a dedicated constants header to provide visual feedback.
-
-🧠 Practice Challenges & Insights
-Challenge 1: Header Guards
+## 🧠 Practice Challenges & Insights
+### Challenge 1: Header Guards
 Question: What is the purpose of the #ifndef, #define, and #endif directives? Why are they important in header files? Answer: These are Include Guards. They prevent Redefinition Errors. Without them, if a header is included multiple times, the compiler tries to define the same functions twice, causing the build to fail.
 
-Challenge 2: Compilation & Linking
+### Challenge 2: Compilation & Linking
 Question: How does the compilation process change for multi-file projects? Write a single compilation command and research useful compiler flags. Answer: We move to a two-step Compile and Link process. Each .cpp is compiled to an object file (.o), then the Linker joins them. Command: g++ -Wall -Wextra -O2 main.cpp basic_math.cpp advanced_math.cpp geometry.cpp -o math_program
 
 -Wall: Shows all common warnings.
@@ -41,9 +39,9 @@ Question: How does the compilation process change for multi-file projects? Write
 🚀 How to Run
 Build: g++ main.cpp basic_math.cpp advanced_math.cpp geometry.cpp -o math_program
 
-Execute: ./math_program (Linux/Mac) or math_program (Windows)
+Execute: `./math_program (Linux/Mac) or math_program (Windows)`
 
-📝 Personal Reflection
+## 📝 Personal Reflection
 This lab was a pivotal moment in my transition from a "coder" to a "developer." I learned:
 
 The Contract vs. The Implementation: A header is a promise; the source file is the fulfillment.
