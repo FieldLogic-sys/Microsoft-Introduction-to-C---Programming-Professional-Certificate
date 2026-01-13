@@ -1,14 +1,25 @@
+#include <iostream>
+#include <cmath>
 #include "advanced_math.h"
-#include <cmath> // For sqrt function
-// TODO: Implement the power function
+#include "ui_constants.h" // Added for consistency with your UI colors
+
+using namespace std;
+
+// Implementation of the power function
 double power(double base, int exponent) {
-    // Your implementation here    
+    cout << YELLOW << "Calculating " << base << " raised to the power of " << exponent << RESET << endl;
+    return pow(base, exponent);
 }
-// TODO: Implement the squareRoot function
+
+// Implementation of the squareRoot function
 double squareRoot(double number) {
-    // Your implementation here    
+    cout << YELLOW << "Calculating square root of " << number << RESET << endl;
+    return sqrt(number);
 }
-// TODO: Implement the absolute function
+
+// Implementation of the absolute function
 double absolute(double number) {
-    // Your implementation here    
+    cout << YELLOW << "Calculating absolute value of " << number << RESET << endl;
+    // The ternary operator: (condition) ? (if true) : (if false)
+    return (number < 0) ? -number : number;
 }
