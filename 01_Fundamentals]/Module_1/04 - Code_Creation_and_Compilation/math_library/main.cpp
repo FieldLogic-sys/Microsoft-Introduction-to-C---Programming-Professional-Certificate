@@ -19,21 +19,33 @@ int main() {
         cout << "3. Geometry Calculations" << endl;
         cout << RED << "0. Exit" << RESET << endl;
         cout << "Selection: ";
-        
-        // Basic input validation for the menu selection
-        if (!(cin >> choice)) {
-            cout << RED << "Invalid input. Please enter a number." << RESET << endl;
+
+        // --- MENU VALIDATION ---
+        while (!(cin >> choice)) {
+            cout << RED << "Invalid selection! Please enter a number (0-3): " << RESET;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue;
         }
 
         switch (choice) {
             case 1: {
                 double n1, n2;
                 cout << YELLOW << "\n--- Basic Math ---" << RESET << endl;
-                cout << "Enter first number: "; cin >> n1;
-                cout << "Enter second number: "; cin >> n2;
+
+                cout << "Enter first number: ";
+                while (!(cin >> n1)) {
+                    cout << RED << "Invalid! Enter a number: " << RESET;
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+
+                cout << "Enter second number: ";
+                while (!(cin >> n2)) {
+                    cout << RED << "Invalid! Enter a number: " << RESET;
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+
                 cout << "Addition: " << add(n1, n2) << endl;
                 cout << "Subtraction: " << subtract(n1, n2) << endl;
                 cout << "Multiplication: " << multiply(n1, n2) << endl;
@@ -44,11 +56,26 @@ int main() {
                 double base, val;
                 int exp;
                 cout << YELLOW << "\n--- Advanced Math ---" << RESET << endl;
-                cout << "Enter base and exponent for Power (e.g., 2 3): "; 
-                cin >> base >> exp;
+                
+                cout << "Enter base: ";
+                while (!(cin >> base)) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid input! Enter a number: " << RESET;
+                }
+                
+                cout << "Enter exponent (integer): ";
+                while (!(cin >> exp)) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid! Enter an integer: " << RESET;
+                }
+                
                 cout << "Result: " << power(base, exp) << endl;
-                cout << "Enter number for Square Root & Absolute: "; 
-                cin >> val;
+
+                cout << "Enter number for Square Root & Absolute: ";
+                while (!(cin >> val)) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid! Enter a number: " << RESET;
+                }
                 cout << "Square Root: " << squareRoot(val) << endl;
                 cout << "Absolute Value: " << absolute(val) << endl;
                 break;
@@ -56,14 +83,32 @@ int main() {
             case 3: {
                 double r, l, w;
                 cout << YELLOW << "\n--- Geometry ---" << RESET << endl;
-                cout << "Enter Circle Radius: "; cin >> r;
+                
+                cout << "Enter Circle Radius: ";
+                while (!(cin >> r) || r < 0) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid! Enter a positive number: " << RESET;
+                }
+                
                 cout << "Circle Area: " << circleArea(r) << " | Perimeter: " << circlePerimeter(r) << endl;
-                cout << "Enter Rectangle Length and Width: "; cin >> l >> w;
+                
+                cout << "Enter Rectangle Length: ";
+                while (!(cin >> l) || l < 0) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid! Enter a positive number: " << RESET;
+                }
+                
+                cout << "Enter Rectangle Width: ";
+                while (!(cin >> w) || w < 0) {
+                    cin.clear(); cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << RED << "Invalid! Enter a positive number: " << RESET;
+                }
+                
                 cout << "Rect Area: " << rectangleArea(l, w) << " | Perimeter: " << rectanglePerimeter(l, w) << endl;
                 break;
             }
             case 0:
-                cout << GREEN << "Exiting program. Demonstration complete!" << RESET << endl;
+                cout << GREEN << "Exiting program. Goodbye!" << RESET << endl;
                 break;
             default:
                 cout << RED << "Choice not recognized." << RESET << endl;
