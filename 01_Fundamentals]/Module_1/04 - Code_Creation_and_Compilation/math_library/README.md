@@ -55,3 +55,10 @@ User-Centric Design: Moving to an interactive menu taught me the importance of i
 ### **Advanced Input Validation**
 * **Stream State Checking:** Implemented `!(cin >> var)` logic to monitor the health of the standard input stream. 
 * **Buffer Management:** Utilized `cin.clear()` and `cin.ignore()` to resolve "Fail Bits" and flush the input buffer, preventing infinite loops during invalid data entry.
+
+
+## 🛠️ Development Process
+This project was developed as part of the Microsoft C++ Professional Certificate. 
+* **Modular Logic:** Implementations for Basic, Advanced, and Geometry math were developed following lab specifications.
+* **Interactive Layer:** I designed and integrated a custom UI using ANSI color constants and a state-based `do-while` menu.
+* **Robustness:** Researched and implemented C++ stream validation (`cin.clear/ignore`) to ensure the tool handles edge cases and invalid user input.
