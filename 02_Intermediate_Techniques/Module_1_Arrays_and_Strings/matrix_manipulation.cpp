@@ -21,7 +21,19 @@ void printMatrix(const Matrix3x3& mat) {
 }
 
 
+//Start of main function
+int main() {
+    Matrix3x3 matrix1 = {{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} }};
+    Matrix3x3 matrix2 = {{ {10, 11, 12}, {13, 14, 15}, {16, 17, 18} }};
 
+    std::cout << "Matrix 1:" << std::endl;
+    printMatrix(matrix1);
+
+    std::cout << "\nMatrix 2:" << std::endl;
+    printMatrix(matrix2);
+
+    return 0;
+}
 
 
 
