@@ -1,122 +1,90 @@
-    #include <iostream>
-    #include <string>
-    #include <algorithm>
-    #include <cctype>
-    #include <vector>
-
-    int word_count(const std::string &text)
-    {
-        // TODO: Review how to use puctuation as delimiters
-        int wordCount = false;
-        bool inWord = false;
-        for (char c : text)
-        {
-            // I researched isalpha to check for alphabetic characters.
-            if (std::isalpha(static_cast<unsigned char>(c))) {
-                if (!inWord) {
-                    inWord = true;
-                    ++wordCount;
-                }
-            } else {
-                inWord = false;
-            }
-            }
-            
-        
-        return wordCount;
-    }
-
-
-    #include <iostream>
-#include <string>
-#include <vector>
-#include <cctype>
-
-void analyze_characters(const std::string& text) {
-    // An array of 26 zeros to represent a-z
-    int counts[26] = {0};
-
-    for (char c : text) {
-        // 1. Filter: Only look at alphabetic characters
-        if (std::isalpha(static_cast<unsigned char>(c))) {
-            
-            // 2. Standardize: Convert to lowercase
-            char lower_c = std::tolower(static_cast<unsigned char>(c));
-            
-            // 3. Map to Index: 'a' becomes 0, 'b' becomes 1, etc.
-            // In C++, subtracting 'a' from a char gives its alphabetical position
-            int index = lower_c - 'a';
-            counts[index]++;
-        }
-    }
-
-    // Output the results
-    std::cout << "Character Occurrences:" << std::endl;
-    for (int i = 0; i < 26; ++i) {
-        if (counts[i] > 0) {
-            char current_letter = 'a' + i;
-            std::cout << current_letter << ": " << counts[i] << std::endl;
-        }
-    }
-}
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cctype>
+#include <algorithm>
 
-void analyze_characters(const std::string& text) {
-    // An array of 26 zeros to represent a-z
+// Function 1: Counts words by detecting transitions (State Machine)
+int countWords(const std::string& text) {
+    int wordCount = 0;
+    bool inWord = false;
+
+    for (char c : text) {
+        // If it's a letter, we might be starting a new word
+        if (std::isalpha(static_cast<unsigned char>(c))) {
+            if (!inWord) {
+                inWord = true;
+                ++wordCount;
+            }
+        } else {
+            // If it's NOT a letter (space, punctuation), we are no longer in a word
+            inWord = false;
+        }
+    }
+    return wordCount;
+}
+
+// Function 2: Counts occurrences of each letter a-z
+void assessCharacterOccurrences(const std::string& text) {
+    // Array of 26 integers initialized to 0
     int counts[26] = {0};
 
     for (char c : text) {
-        // 1. Filter: Only look at alphabetic characters
+        // Step 1: Ignore non-alphabetic characters
         if (std::isalpha(static_cast<unsigned char>(c))) {
-            
-            // 2. Standardize: Convert to lowercase
+            // Step 2: Standardize case to lowercase
             char lower_c = std::tolower(static_cast<unsigned char>(c));
             
-            // 3. Map to Index: 'a' becomes 0, 'b' becomes 1, etc.
-            // In C++, subtracting 'a' from a char gives its alphabetical position
+            // Step 3: Map 'a' to 0, 'b' to 1, etc. using ASCII math
             int index = lower_c - 'a';
             counts[index]++;
         }
     }
 
-    // Output the results
+    // Print results for any letter found
     std::cout << "Character Occurrences:" << std::endl;
     for (int i = 0; i < 26; ++i) {
         if (counts[i] > 0) {
-            char current_letter = 'a' + i;
-            std::cout << current_letter << ": " << counts[i] << std::endl;
+            char letter = 'a' + i; // Map index back to letter
+            std::cout << letter << ": " << counts[i] << std::endl;
         }
     }
 }
 
 
-void analyze_all_characters(const std::string& text) {
-    // A bucket for every possible ASCII character (0-255)
-    int counts[256] = {0};
-
+void isPalandrome(const std::string& text) {
+    std::string filtered;
+    // Gemini's approach to filter and normalize the text
+    // This one line does the exact same thing as the 5-line for loop above
+// std::copy_if(text.begin(), text.end(), std::back_ins erter(filtered), 
+//              [](unsigned char c){ return std::isalpha(c); });
     for (char c : text) {
-        // We use the character's numeric value as the index
-        // Example: ' ' (space) is 32, '!' is 33
-        unsigned char index = static_cast<unsigned char>(c);
-        counts[index]++;
-    }
-
-    std::cout << "Character Occurrences (including punctuation/spaces):" << std::endl;
-    for (int i = 0; i < 256; ++i) {
-        if (counts[i] > 0) {
-            // Print the character and how many times it appeared
-            std::cout << "'" << (char)i << "': " << counts[i] << std::endl;
+        if (std::isalpha(static_cast<unsigned char>(c))) {
+            filtered += std::tolower(static_cast<unsigned char>(c));
         }
     }
-}
-    
-    int main()
-    {
-        std::string sampleText = "Hello, world! This is a comprehensive text analyzer.";
-        int count = word_count(sampleText);
-        std::cout << "Total word count: " << count << std::endl;
-        return 0;
+
+    std::string reversed = filtered;
+    std::reverse(reversed.begin(), reversed.end());
+
+    if (filtered == reversed) {
+        std::cout << "The text is a palindrome." << std::endl;
+    } else {
+        std::cout << "The text is not a palindrome." << std::endl;
     }
+}
+
+int main() {
+    std::string sampleText = "Hello, world! This is a comprehensive text analyzer.";
+    
+    std::cout << "Analyzing: " << sampleText << "\n" << std::endl;
+
+    // Execute Word Count
+    int words = countWords(sampleText);
+    std::cout << "Total word count: " << words << std::endl;
+
+    // Execute Character Analysis
+    assessCharacterOccurrences(sampleText);
+
+    return 0;
+}
