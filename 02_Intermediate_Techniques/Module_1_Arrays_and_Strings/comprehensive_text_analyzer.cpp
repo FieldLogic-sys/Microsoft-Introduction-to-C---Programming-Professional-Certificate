@@ -4,70 +4,67 @@
 #include <cctype>
 #include <algorithm>
 
-// Function 1: Counts words by detecting transitions (State Machine)
+// Function 1: Counts words using a "State Machine" logic
+// This counts transitions from non-alphabetic to alphabetic characters
 int countWords(const std::string& text) {
     int wordCount = 0;
     bool inWord = false;
 
     for (char c : text) {
-        // If it's a letter, we might be starting a new word
+        // Use static_cast for safety when passing to cctype functions
         if (std::isalpha(static_cast<unsigned char>(c))) {
             if (!inWord) {
-                inWord = true;
+                inWord = true; // We just entered a word
                 ++wordCount;
             }
         } else {
-            // If it's NOT a letter (space, punctuation), we are no longer in a word
-            inWord = false;
+            inWord = false; // We hit a space or punctuation
         }
     }
     return wordCount;
 }
 
-// Function 2: Counts occurrences of each letter a-z
+// Function 2: Counts how many times each letter (a-z) appears
 void assessCharacterOccurrences(const std::string& text) {
-    // Array of 26 integers initialized to 0
-    int counts[26] = {0};
+    int counts[26] = {0}; // Fixed-size array for 'a' through 'z'
 
     for (char c : text) {
-        // Step 1: Ignore non-alphabetic characters
         if (std::isalpha(static_cast<unsigned char>(c))) {
-            // Step 2: Standardize case to lowercase
+            // Standardize to lowercase so 'A' and 'a' map to the same index
             char lower_c = std::tolower(static_cast<unsigned char>(c));
             
-            // Step 3: Map 'a' to 0, 'b' to 1, etc. using ASCII math
+            // ASCII Math: 'a' - 'a' = 0, 'b' - 'a' = 1, etc.
             int index = lower_c - 'a';
             counts[index]++;
         }
     }
 
-    // Print results for any letter found
     std::cout << "Character Occurrences:" << std::endl;
     for (int i = 0; i < 26; ++i) {
         if (counts[i] > 0) {
-            char letter = 'a' + i; // Map index back to letter
+            char letter = static_cast<char>('a' + i); 
             std::cout << letter << ": " << counts[i] << std::endl;
         }
     }
 }
 
+// Function 3: Checks for Palindrome by creating a "Filtered" clean copy
+void isPalindrome(const std::string& text) {
+    std::string filtered = ""; 
 
-void isPalandrome(const std::string& text) {
-    std::string filtered;
-    // Gemini's approach to filter and normalize the text
-    // This one line does the exact same thing as the 5-line for loop above
-// std::copy_if(text.begin(), text.end(), std::back_ins erter(filtered), 
-//              [](unsigned char c){ return std::isalpha(c); });
+    // Step 1: Filter and Normalize
     for (char c : text) {
         if (std::isalpha(static_cast<unsigned char>(c))) {
             filtered += std::tolower(static_cast<unsigned char>(c));
         }
     }
 
+    // Step 2: Create a twin and reverse it
     std::string reversed = filtered;
     std::reverse(reversed.begin(), reversed.end());
 
-    if (filtered == reversed) {
+    // Step 3: Compare. We check !empty to ensure text actually had letters.
+    if (!filtered.empty() && filtered == reversed) {
         std::cout << "The text is a palindrome." << std::endl;
     } else {
         std::cout << "The text is not a palindrome." << std::endl;
@@ -75,7 +72,8 @@ void isPalandrome(const std::string& text) {
 }
 
 int main() {
-    std::string sampleText = "Hello, world! This is a comprehensive text analyzer.";
+    // You can change this text to test different scenarios
+    std::string sampleText = "A man, a plan, a canal: Panama";
     
     std::cout << "Analyzing: " << sampleText << "\n" << std::endl;
 
@@ -85,6 +83,9 @@ int main() {
 
     // Execute Character Analysis
     assessCharacterOccurrences(sampleText);
+
+    // Execute Palindrome Check
+    isPalindrome(sampleText);
 
     return 0;
 }
