@@ -1,0 +1,5 @@
+Daily Sales Report
+============
+Product        Quantity  Price     
+Laptop         5         $999.99
+Mouse          12        $29.99
