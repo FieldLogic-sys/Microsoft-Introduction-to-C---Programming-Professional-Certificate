@@ -3,64 +3,53 @@
 #include <fstream>
 #include <iostream>
 
-
 bool processAndLog(const std::string &inputName, const std::string &logName)
 {
-    // Setting up the stream
+    // Open input for reading and output for appending
     std::ifstream inFile(inputName);
-
-    // To ensure that files are not overwritten by using ios:app
-
     std::ofstream logFile(logName, std::ios::app);
 
-    // File validation
-
-    // if (!inFile.is_open()) {
-    //     std::cerr << "Error: Input file " << inputName << " missing" << std::endl;
-    //     return false;
-    // }
-
-    // if (!logFile.is_open()) {
-    //     std::cerr << "Error: Could not open log file." << std::endl;
-    //     return false;
-    // }
-
+    // Validate that both files opened successfully
     if (!inFile.is_open() || !logFile.is_open())
     {
         std::cerr << "Error: Could not open files." << std::endl;
         return false;
     }
 
-    
     std::string line;
+    int sessionCount = 0; 
     std::cout << "Processing data..." << std::endl;
 
     while (std::getline(inFile, line))
     {
-      
         size_t commaPos = line.find(',');
 
         if (commaPos != std::string::npos)
         {
+            // Parse the two parts of the CSV line
             std::string item = line.substr(0, commaPos);
+            std::string value = line.substr(commaPos + 1);
 
-            logFile << "[" << getTimestamp() << "]"  << "[Info] Processed item: " << item << std::endl;
-            std::cout << "Logged: " << item << std::endl;
+            // Log entry with both the name and the value
+            logFile << "[" << getTimestamp() << "] [Info] Processed item: " 
+                    << item << " | Value: " << value << std::endl;
+            
+            std::cout << "Logged: " << item << " (" << value << ")" << std::endl;
+            
+            sessionCount++; // Increment counter for summary
+        }
+        else if (!line.empty()) 
+        {
+            // Edge case: Log an error if the line isn't empty but lacks a comma
+            logFile << "[" << getTimestamp() << "] [Error] Invalid format: " << line << std::endl;
         }
     }
 
-    // if (!openedFile.is_open()) {
-    //     std::cerr << "Error: Could not open the output file." << std::endl;
-    //     return false;
-    // }
-
-    // if (fs::exists(fileName)) {
-    //     openedFile.open(fileName, std::ios::app);
-    //     std::cout << "File found, will now add the data to the end of the file";
-    // }
+    // Add a summary line to the log for traceability
+    logFile << "[" << getTimestamp() << "] [SUMMARY] Session complete. Items processed: " << sessionCount << std::endl;
+    logFile << "--------------------------------------------------------" << std::endl;
 
     inFile.close();
     logFile.close();
     return true;
 }
-
