@@ -42,6 +42,14 @@ Parsing Comma-Separated Values requires string manipulation to isolate data from
 * **`line.substr(pos + 1)`**: Cuts from the comma to the end (e.g., Value).
 * **`std::string::npos`**: A special value meaning "Not Found," used to validate the CSV format before cutting.
 
+---
+
+
+## 🧩 Data Parsing (Modern Logic)
+Modern C++ provides cleaner ways to isolate data from delimiters like commas:
+* **`std::istringstream`**: Converts a string into a "mini-stream," allowing you to use stream tools on text data.
+* **`std::getline(ss, target, ',')`**: Extracts data until it hits a specific delimiter (the comma), automating CSV parsing.
+* **Struct Bundling**: Encapsulating multiple return values (e.g., Name, Value, Success) into a single `struct` for cleaner function returns.
 
 
 ---

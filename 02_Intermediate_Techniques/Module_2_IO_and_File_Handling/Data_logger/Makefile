@@ -1,8 +1,8 @@
 # Define the compiler
 CXX = g++
 
-# Define compiler flags (enable warnings and use C++17)
-CXXFLAGS = -Wall -std=c++17
+# UPDATED: Using C++20 for stable std::format support on Windows
+CXXFLAGS = -Wall -std=c++20
 
 # Define the target executable name
 TARGET = DataLogger
@@ -16,6 +16,6 @@ all: $(TARGET)
 $(TARGET): $(SRCS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
 
-# Rule to clean up the folder (remove the exe)
+# Rule to clean up the folder
 clean:
 	rm -f $(TARGET)

@@ -1,23 +1,21 @@
 #include "utils.h"
-#include <ctime>
-#include <filesystem>
-#include <iostream>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 
-namespace fs = std::filesystem;
+FullTimestamp getTimestamp() {
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
 
-std::string getTimestamp() {
-    std::time_t now = std::time(nullptr);
-    std::string timeStr = std::ctime(&now);
-    if (!timeStr.empty()) {
-        timeStr.pop_back();
-    }
-    return timeStr;
+    std::stringstream ssDate, ssTime;
+    ssDate << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d");
+    ssTime << std::put_time(std::localtime(&in_time_t), "%H:%M:%S");
+
+    return { ssDate.str(), ssTime.str() }; // Packing the struct!
 }
 
-void ensureDirectoryExists(const std::string& folderName) {
-    // Check if the path exists and if it is not already a directory
-    if (!fs::exists(folderName)) {
-        std::cout << "Creating directory: " << folderName << std::endl;
-        fs::create_directory(folderName); // Standard C++17 way to make a folder
+void ensureDirectoryExists(const std::string &path) {
+    if (!std::filesystem::exists(path)) {
+        std::filesystem::create_directory(path);
     }
 }

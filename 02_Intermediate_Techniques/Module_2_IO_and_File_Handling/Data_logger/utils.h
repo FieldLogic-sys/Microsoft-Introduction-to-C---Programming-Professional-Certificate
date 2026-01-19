@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
+#include <filesystem>
 
-// Function to generate a clean timestamp
-std::string getTimestamp();
+struct FullTimestamp {
+    std::string date;
+    std::string time;
+};
 
-// Function to ensure a folder exists before we try to use it
-void ensureDirectoryExists(const std::string& folderName);
+void ensureDirectoryExists(const std::string &path);
+FullTimestamp getTimestamp(); // Updated return type
