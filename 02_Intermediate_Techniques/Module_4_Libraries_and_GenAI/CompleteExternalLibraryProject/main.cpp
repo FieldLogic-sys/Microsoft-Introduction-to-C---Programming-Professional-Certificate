@@ -24,7 +24,8 @@ int main() {
 
     std::string line;
     std::cout << "--- Starting Multi-Site Scraper ---" << std::endl;
-
+size_t totalBytes = 0;
+int successCount = 0;
     while (std::getline(urlFile, line)) {
         std::string currentUrl = NetworkManager::trim(line);
         if (currentUrl.empty()) continue; 
@@ -42,6 +43,8 @@ int main() {
         double sizeInKb = byteSize / 1024.0;
 
         if (responseCode == 200) {
+            totalBytes += byteSize;
+successCount++;
             title = NetworkManager::extractTitle(html);
             std::cout << "   -> Found Title: " << title << std::endl;
             std::cout << "   -> Data Size:   " << std::fixed << std::setprecision(2) 
@@ -62,6 +65,19 @@ int main() {
     urlFile.close();
     csvFile.close();
     curl_global_cleanup();
+
+    if (successCount > 0) {
+    double averageKb = (totalBytes / 1024.0) / successCount;
+    std::cout << "\n--- Statistical Summary ---" << std::endl;
+    std::cout << "Total Sites Processed: " << successCount << std::endl;
+    std::cout << "Total Data Downloaded: " << (totalBytes / 1024.0) << " KB" << std::endl;
+    std::cout << "Average Page Size:     " << averageKb << " KB" << std::endl;
+    
+    // Also append to CSV as a footer
+    csvFile << "\nTOTAL_SITES," << successCount << "\n";
+    csvFile << "TOTAL_KB," << (totalBytes / 1024.0) << "\n";
+    csvFile << "AVG_KB_PER_SITE," << averageKb << "\n";
+}
 
     std::cout << "--- Scrape Complete. Results saved to results.csv ---" << std::endl;
     return 0;
