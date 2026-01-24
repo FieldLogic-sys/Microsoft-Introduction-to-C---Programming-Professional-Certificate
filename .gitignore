@@ -1,1 +1,12 @@
 *.exe
+**/02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/json/
+
+
+# Ignore all build folders and their contents
+build/
+**/build/
+
+# Ignore executables and compiler artifacts
+*.out
+*.exe
+ConfigManager
