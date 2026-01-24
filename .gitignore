@@ -10,3 +10,28 @@ build/
 *.out
 *.exe
 ConfigManager
+
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Linker output
+*.out
+*.exe
+*.app
+
+# CMake artifacts (Specific to your images)
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+Makefile
+build/

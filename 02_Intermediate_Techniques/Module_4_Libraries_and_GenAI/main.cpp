@@ -1,52 +1,55 @@
-#include <iostream>      //
-#include <string>        //
-#include <nlohmann/json.hpp> //
+#include <iostream>
+#include <fstream>      // Required for file streams
+#include <string>
+#include <filesystem>
+#include <nlohmann/json.hpp>
 
-using json = nlohmann::json; //
+using json = nlohmann::json;
+namespace fs = std::filesystem;
 
-// Function to display the data parsed from the Heap
-void displayConfiguration(const json& config) {
-    std::cout << "--- Application Details ---" << std::endl; //
+// Function to load and parse JSON from disk
+json loadConfigFromFile(const std::string& filename) {
+    std::ifstream inputFile(filename); // Open the file for reading
     
-    // Accessing the Heap data using keys
-    // .value() is used to provide a fallback to prevent crashes
-    std::cout << "Name:    " << config.value("app_name", "N/A") << std::endl; //
-    std::cout << "Version: " << config.value("version", "N/A") << std::endl; //
-    
-    // Accessing nested JSON objects
-    if (config.contains("database")) {
-        std::cout << "DB Host: " << config["database"].value("host", "unknown") << std::endl; //
-        std::cout << "DB Port: " << config["database"].value("port", 0) << std::endl; //
+    if (!inputFile.is_open()) {
+        throw std::runtime_error("File not found or inaccessible: " + filename);
     }
+    
+    json config;
+    inputFile >> config; // Stream content into the JSON object
+    inputFile.close();   // Good practice to close the stream
+    return config;
 }
 
 int main() {
-    std::cout << "Configuration Manager v1.0" << std::endl; //
-
-    // The Raw String Literal representing our JSON data
-    std::string configData = R"({
-        "app_name": "MyApplication",
-        "version": "1.2.3",
-        "debug_mode": true,
-        "max_connections": 100,
-        "database": {
-            "host": "localhost",
-            "port": 5432
-        }
-    })";
+    std::cout << "Configuration Manager v2.0" << std::endl;
+    std::string filename = "config.json"; // Variable must be defined before use
 
     try {
-        // Step 1: Parse the string into a JSON object on the Heap
-        json config = json::parse(configData);
-        
-        // Step 2: Call the display function
-        displayConfiguration(config);
+        // Step 1: Create/Write the sample config file
+        std::ofstream configFile(filename);
+        std::string configData = R"({
+            "app_name": "MyApplication",
+            "version": "1.2.3",
+            "debug_mode": true,
+            "max_connections": 200,
+            "features": ["logging", "caching", "monitoring"]
+        })"; // Fixed missing quotes in the array
 
-    } catch (const nlohmann::json::exception& e) {
-        // Step 3: Handle any potential parsing errors
-        std::cerr << "JSON error: " << e.what() << std::endl; //
+        configFile << configData; 
+        configFile.close();
+
+        // Step 2: Load and display the config
+        json config = loadConfigFromFile(filename);
+        
+        std::cout << "Successfully loaded: " << config["app_name"] << std::endl;
+        std::cout << "Max Connections: " << config.at("max_connections") << std::endl;
+
+    } catch (const std::exception& e) {
+        // Step 3: Handle file or parsing errors
+        std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
 
-    return 0; // Signals successful completion to the OS
+    return 0; 
 }
