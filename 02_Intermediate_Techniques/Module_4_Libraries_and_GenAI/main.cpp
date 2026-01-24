@@ -23,23 +23,23 @@ json loadConfigFromFile(const std::string& filename) {
 
 int main() {
     std::cout << "Configuration Manager v2.0" << std::endl;
-    std::string filename = "config.json"; // Variable must be defined before use
+    std::string filename = "config.json";
 
     try {
         // Step 1: Create/Write the sample config file
-        std::ofstream configFile(filename);
+        std::ofstream configFile(filename);   // Creates the file
         std::string configData = R"({
             "app_name": "MyApplication",
             "version": "1.2.3",
             "debug_mode": true,
             "max_connections": 200,
             "features": ["logging", "caching", "monitoring"]
-        })"; // Fixed missing quotes in the array
+        })"; 
 
-        configFile << configData; 
+        configFile << configData;  // Writes the sample config data to the file
         configFile.close();
 
-        // Step 2: Load and display the config
+        // Step 2: Load and display the config to the terminal
         json config = loadConfigFromFile(filename);
         
         std::cout << "Successfully loaded: " << config["app_name"] << std::endl;
