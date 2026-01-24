@@ -1,11 +1,13 @@
 #ifndef NETWORK_MANAGER_H
 #define NETWORK_MANAGER_H
 
-
-#include <strings>
+#include <string> // <--- THIS IS THE MISSING INCLUDE
 
 class NetworkManager {
-    public:
-        // This is all that the rest of the app needs to see is what I have learned
-        static std::string fetchURL(const std::string& long& response_code);
+public:
+    static std::string fetchURL(const std::string& url, long& responseCode);
+    static std::string extractTitle(const std::string& html);
+    static std::string trim(const std::string& str); 
 };
+
+#endif
