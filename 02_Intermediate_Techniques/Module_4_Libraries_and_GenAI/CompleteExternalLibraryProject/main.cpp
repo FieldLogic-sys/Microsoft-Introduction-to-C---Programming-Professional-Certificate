@@ -1,12 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <iomanip> 
 #include "NetworkManager.h"
+#include "DataStructures.h" // New structured data header
 #include <curl/curl.h>
 
 int main() {
+    // 1. Initialize System
     curl_global_init(CURL_GLOBAL_ALL);
+    std::vector<ScrapeRecord> results; // Vector to store our structured records
 
     std::ifstream urlFile("sites.txt");
     if (!urlFile.is_open()) {
@@ -20,65 +24,65 @@ int main() {
         return 1;
     }
 
+    // Write CSV Header
     csvFile << "URL,Status,Title,Size_KB,Size_Bytes" << "\n";
 
     std::string line;
-    std::cout << "--- Starting Multi-Site Scraper ---" << std::endl;
-size_t totalBytes = 0;
-int successCount = 0;
+    std::cout << "--- Starting Capstone Multi-Site Scraper ---" << std::endl;
+
+    // 2. Processing Loop
     while (std::getline(urlFile, line)) {
         std::string currentUrl = NetworkManager::trim(line);
         if (currentUrl.empty()) continue; 
 
         std::cout << "Processing: " << currentUrl << "..." << std::endl;
 
-        long responseCode = 0; 
-        std::string title = "N/A"; 
+        // Create a record for this specific site
+        ScrapeRecord record;
+        record.url = currentUrl;
         
-        // 1. Fetch ONCE
-        std::string html = NetworkManager::fetchURL(currentUrl, responseCode);
+        // Fetch data once
+        std::string html = NetworkManager::fetchURL(record.url, record.status);
         
-        // 2. Capture the stats immediately
-        size_t byteSize = html.length(); 
-        double sizeInKb = byteSize / 1024.0;
+        // Capture snapshots immediately
+        record.byteSize = html.length(); 
+        record.sizeInKb = record.byteSize / 1024.0;
 
-        if (responseCode == 200) {
-            totalBytes += byteSize;
-successCount++;
-            title = NetworkManager::extractTitle(html);
-            std::cout << "   -> Found Title: " << title << std::endl;
-            std::cout << "   -> Data Size:   " << std::fixed << std::setprecision(2) 
-                      << sizeInKb << " KB (" << byteSize << " bytes)\n" << std::endl;
+        if (record.status == 200) {
+            record.title = NetworkManager::extractTitle(html);
+            std::cout << "   -> Found Title: " << record.title << std::endl;
+            std::cout << "   -> Data Size:    " << std::fixed << std::setprecision(2) 
+                      << record.sizeInKb << " KB\n" << std::endl;
         } else {
-            std::cerr << "   -> [Error] Status Code: " << responseCode << "\n" << std::endl;
+            record.title = "N/A";
+            std::cerr << "   -> [Error] Status Code: " << record.status << "\n" << std::endl;
         }
 
-        // 3. Write to CSV using the exact same variables
+        // Add to our collection
+        results.push_back(record);
+
+        // 3. Write to CSV using the structured record
         csvFile << std::fixed << std::setprecision(2);
-        csvFile << currentUrl << "," 
-                << responseCode << "," 
-                << "\"" << title << "\"" << "," 
-                << sizeInKb << "," 
-                << byteSize << "\n";
+        csvFile << record.url << "," 
+                << record.status << "," 
+                << "\"" << record.title << "\"" << "," 
+                << record.sizeInKb << "," 
+                << record.byteSize << "\n";
     }
 
+    // 4. Final Analysis & Cleanup
     urlFile.close();
+
+    // Use our new DataAnalysis namespace to generate the summary
+    std::string summary = DataAnalysis::calculateStatistics(results);
+    std::cout << summary << std::endl;
+
+    // Append summary to the end of the CSV
+    csvFile << "\n" << summary; 
     csvFile.close();
+    
     curl_global_cleanup();
 
-    if (successCount > 0) {
-    double averageKb = (totalBytes / 1024.0) / successCount;
-    std::cout << "\n--- Statistical Summary ---" << std::endl;
-    std::cout << "Total Sites Processed: " << successCount << std::endl;
-    std::cout << "Total Data Downloaded: " << (totalBytes / 1024.0) << " KB" << std::endl;
-    std::cout << "Average Page Size:     " << averageKb << " KB" << std::endl;
-    
-    // Also append to CSV as a footer
-    csvFile << "\nTOTAL_SITES," << successCount << "\n";
-    csvFile << "TOTAL_KB," << (totalBytes / 1024.0) << "\n";
-    csvFile << "AVG_KB_PER_SITE," << averageKb << "\n";
-}
-
-    std::cout << "--- Scrape Complete. Results saved to results.csv ---" << std::endl;
+    std::cout << "--- Scrape Complete. Analysis saved to results.csv ---" << std::endl;
     return 0;
 }
