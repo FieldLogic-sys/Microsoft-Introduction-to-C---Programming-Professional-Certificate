@@ -22,6 +22,13 @@ To maintain high-quality, professional codebases, this project follows a modular
 
 ---
 
+## 🏗️ Deployment & Linking Strategy
+* **Static Linking**: Chosen for this project to ensure the `multi_scraper` is a standalone binary. This avoids "Dependency Hell" where the program fails due to missing `.so` or `.dll` files on the host system.
+* **CMake find_package()**: Utilized to abstract the search for `libcurl` and `nlohmann_json`. This makes the build system "Portable"—it can compile on any machine that has these libraries installed without hard-coding local paths.
+* **Package Management**: While libraries were installed via system managers (apt/brew) for this lab, tools like **vcpkg** or **Conan** are recommended for larger projects to manage version conflicts and cross-platform builds.
+
+---
+
 ## 🚀 The "From Scratch" Logic Map
 *Follow these steps to replicate the core functionality of this project:*
 
