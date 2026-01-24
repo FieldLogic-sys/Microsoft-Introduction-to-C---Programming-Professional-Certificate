@@ -11,11 +11,22 @@ This module focused on transitioning from standalone C++ programs to professiona
 
 ---
 
+## 🏗️ Multi-File Architecture
+To follow industry standards, this project is split into separate translation units to improve compilation speed and organization:
+
+* **`ConfigManager.h`**: The header file containing function declarations and the `#include <nlohmann/json.hpp>`.
+* **`ConfigManager.cpp`**: The implementation file where the actual JSON loading and display logic resides.
+* **`main.cpp`**: The entry point that orchestrates file creation, loading, and execution.
+
+
+
+---
+
 ## 🛠️ Setup & Installation (Windows & Linux/WSL)
 
 ### **1. Library Dependency**
 We utilize the `nlohmann/json` library. 
-* **Linux/WSL**: Clone the repository or download the `json.hpp` file into your project directory.
+* **Linux/WSL**: Install via package manager (`sudo apt install nlohmann-json3-dev`) or download the `json.hpp` file.
 * **Windows**: Ensure the header file is in your include path or local project folder.
 
 ### **2. Build System Configuration (CMake)**
@@ -25,12 +36,16 @@ Create a `CMakeLists.txt` file in your module directory to handle the compilatio
 cmake_minimum_required(VERSION 3.10)
 project(ConfigManager)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
-# Include the local json directory
-include_directories(json/single_include)
+# Linux knows where this is because of the 'apt' install
+find_package(nlohmann_json REQUIRED)
 
-add_executable(ConfigManager main.cpp)
+# IMPORTANT: List BOTH .cpp files so the Linker can stitch them together
+add_executable(ConfigManager main.cpp ConfigManager.cpp)
+
+# Link the JSON library to your project
+target_link_libraries(ConfigManager PRIVATE nlohmann_json::nlohmann_json)
 ```
 
 ---
@@ -44,7 +59,7 @@ Run these commands in your terminal to build and execute:
 # Generate build files
 cmake .
 
-# Compile the code
+# Compile the code (main.cpp and ConfigManager.cpp)
 make
 
 # Run the program
@@ -64,8 +79,6 @@ cmake --build .
 # Run the program
 .\Debug\ConfigManager.exe
 ```
-
-
 
 ---
 
@@ -109,10 +122,11 @@ The following are the **"Big Five"** core operations that account for approximat
 ## 🛠️ DevOps & Git Mastery
 This module required advanced Git troubleshooting to manage a clean repository across the WSL/Windows bridge:
 
-* **Embedded Repository Fix**: Resolved "submodule" warnings by removing nested `.git` folders: `rm -rf json/.git`.
-* **Recursive Staging**: Utilized `git rm -r --cached .` followed by `git add .` to force Git to obey `.gitignore` rules for build artifacts.
+* **Embedded Repository Fix**: Resolved "submodule" warnings by removing nested `.git` folders within third-party libraries: `rm -rf json/.git`.
+* **Recursive Staging**: Utilized `git rm -r --cached .` followed by `git add .` to force Git to obey new `.gitignore` rules for build artifacts.
 * **Pathspec Commits**: Used targeted commits to bypass environment noise: `git commit -m "msg" path/to/file.cpp`.
 * **Metadata Alignment**: Used `git checkout .` to discard phantom modifications caused by cross-platform permission shifts.
+* **VS Code Integration**: Integrated the **Microsoft CMake Tools** extension for automated building, IntelliSense support, and one-click execution.
 
 ---
 

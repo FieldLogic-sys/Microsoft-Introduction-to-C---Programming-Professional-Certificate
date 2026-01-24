@@ -3,5 +3,10 @@
             "version": "1.2.3",
             "debug_mode": true,
             "max_connections": 200,
-            "features": ["logging", "caching", "monitoring"]
+            "database": {
+                "host": "localhost",
+                "port": 5432
+            },
+            "features": ["logging", "caching", "monitoring"],
+            "WhateverKey": "WhateverValue"
         }

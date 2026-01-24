@@ -1,53 +1,52 @@
+
 #include <iostream>
-#include <fstream>      // Required for file streams
+#include <fstream>
 #include <string>
-#include <filesystem>
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
-namespace fs = std::filesystem;
-
-// Function to load and parse JSON from disk
-json loadConfigFromFile(const std::string& filename) {
-    std::ifstream inputFile(filename); // Open the file for reading
-    
-    if (!inputFile.is_open()) {
-        throw std::runtime_error("File not found or inaccessible: " + filename);
-    }
-    
-    json config;
-    inputFile >> config; // Stream content into the JSON object
-    inputFile.close();   // Good practice to close the stream
-    return config;
-}
+#include "ConfigManager.h" // Includes our 'json' type and function blueprints
 
 int main() {
+    // 1. Defining the file variable (Added missing semicolon here)
+    std::string filename = "config.json"; 
+
     std::cout << "Configuration Manager v2.0" << std::endl;
-    std::string filename = "config.json";
 
     try {
-        // Step 1: Create/Write the sample config file
-        std::ofstream configFile(filename);   // Creates the file
+        // STEP 1: Create/Write the sample config file
+        // We open the stream and name it 'configFile'
+        std::ofstream configFile(filename); 
+
+        // Fixed the variable name typo: your code said 'outFile', but you named it 'configFile'
+        if (!configFile.is_open()) { 
+            throw std::runtime_error("Could not create: " + filename);
+        }
+
+        // Fixed the JSON string: Added a missing closing brace for the "database" object
         std::string configData = R"({
             "app_name": "MyApplication",
             "version": "1.2.3",
             "debug_mode": true,
             "max_connections": 200,
-            "features": ["logging", "caching", "monitoring"]
+            "database": {
+                "host": "localhost",
+                "port": 5432
+            },
+            "features": ["logging", "caching", "monitoring"],
+            "WhateverKey": "WhateverValue"
         })"; 
 
-        configFile << configData;  // Writes the sample config data to the file
-        configFile.close();
+        configFile << configData;  // Writes the data to the disk
+        configFile.close();        // Closing the stream
 
-        // Step 2: Load and display the config to the terminal
+        // STEP 2: Load and display the config
+        // This returns a 'json' object filled with data from the Heap
         json config = loadConfigFromFile(filename);
         
-        std::cout << "Successfully loaded: " << config["app_name"] << std::endl;
-        std::cout << "Max Connections: " << config.at("max_connections") << std::endl;
+        // Use your specialized display tool from the other file
+        displayConfiguration(config);
 
     } catch (const std::exception& e) {
-        // Step 3: Handle file or parsing errors
-        std::cerr << "Error: " << e.what() << std::endl;
+        // STEP 3: Catch any file or JSON errors
+        std::cerr << "CRITICAL ERROR: " << e.what() << std::endl;
         return 1;
     }
 
