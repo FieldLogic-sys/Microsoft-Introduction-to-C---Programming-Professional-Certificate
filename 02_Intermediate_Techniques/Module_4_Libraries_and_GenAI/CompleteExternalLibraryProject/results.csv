@@ -1,0 +1,4 @@
+URL,Status,Title,Size_KB,Size_Bytes
+https://www.google.com,200,"Google",53.42,54697
+https://www.wikipedia.org,403,"N/A",0.12,126
+https://www.cppreference.com,200,"cppreference.com",49.31,50496
