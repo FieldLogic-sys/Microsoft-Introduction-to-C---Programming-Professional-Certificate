@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-
 class Book {
 private:
     std::string title;
@@ -11,7 +10,7 @@ private:
 
 public:
     //Parameterized constructor
-    Book(std::string bookTitle, std::string bookAuthor, int pageCount) 
+    Book(std::string bookTitle, std::string bookAuthor, int pageCount)
     :title(bookTitle), author(bookAuthor), pages(pageCount), isAvailable(true) {
 
     }
@@ -20,7 +19,6 @@ public:
     std::string getTitle() const { return title; }
     std::string getAuthor() const { return author; }
     int getPages() const { return isAvailable; }
-
 
     // Setters
     void setPages (int newPages) {
@@ -42,10 +40,7 @@ public:
 
     }
 
-
 };
-
-
 
 int main() {
     // Book creation creation
@@ -53,18 +48,15 @@ int main() {
     Book book2("Clean Code", "Robert c Martin", 464);
     Book book3("Steal the Network", "Multiple", 100);
 
-
     book1.displayInfo();
     book2.displayInfo();
     book3.displayInfo();
 
-
     // Object Interation
-
 
     std::cout << "Checking out: " << book1.getTitle() << std::endl;
     book1.setAvailability(false);
     book1.displayInfo();
     return 0;
-    
+
 }
