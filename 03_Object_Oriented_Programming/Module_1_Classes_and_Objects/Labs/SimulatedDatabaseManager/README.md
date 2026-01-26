@@ -1,4 +1,4 @@
-# Task 2: Distributed Database Connection Manager
+# Task 2: Simulated Industrial Database Manager
 ### Object-Oriented Lifecycle & Resource Management
 
 ## 📌 Technical Overview

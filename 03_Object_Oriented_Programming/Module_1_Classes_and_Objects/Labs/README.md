@@ -1,33 +1,42 @@
-# Lab: Industrial Entity & Digital Asset Management
-### Microsoft Introduction to C++ Programming | Module 1
+# Module 1 Laboratory: Industrial Entity & Resource Management
+### Microsoft Professional Certificate | C++ Programming
 
 ## 📌 Strategic Overview
-This system architects a dual-purpose simulation for industrial entities and digital resources, bridging high-level MBA-driven integrity with low-level MSCS hardware control. It demonstrates a complete **Object Lifecycle Management** strategy and a **Global Telemetry Registry** to ensure data uniqueness and memory safety.
+This laboratory module explores the lifecycle of C++ objects within industrial simulations. It transitions from monolithic procedural logic to **Modular Architectural Design**, focusing on memory safety (RAII) and global telemetry tracking across two distinct implementation tiers.
 
-## 🛠 Architectural Pillars
+## 🛠 Project Components
 
-### 1. RAII & Global Telemetry
-RAII ensures resource management is tied strictly to object lifetime. 
-* **Static Totalizer:** Implements `static int totalAssets` for $O(1)$ global resource tracking.
-* **Collision Guard:** Utilizes a `static std::set` registry to enforce unique naming conventions, preventing primary-key violations in the system state.
+### 1. Digital Asset Management (Task 1)
+* **Architecture:** Monolithic Implementation (`DigitalAssetManagement.cpp`).
+* **Core Logic:** Encapsulation, `std::set` registry for collision avoidance, and defensive string analysis.
+* **Industrial Context:** Managing unique digital IDs for a network of tank monitors.
 
-### 2. Defensive Programming & Validation
-The system implements "Gatekeeper" logic within the **Parameterized Constructor**:
-* **Boundary Checks:** Sanitizes input to prevent negative magnitudes (e.g., file sizes < 0).
-* **Extension Integrity:** Performs string analysis using `size_t` and `find_last_of` to validate file format security.
-* **Namespace Resolution:** Automatically renames duplicates using a `_DUP_` serialization logic to maintain system uptime.
+### 2. Simulated Database Manager (Task 2)
+* **Architecture:** Multi-file Modular Design (.h / .cpp / main.cpp).
+* **Core Logic:** **RAII (Resource Acquisition Is Initialization)**, Custom Copy Constructors, and Scoped Lifecycle Management.
+* **Industrial Context:** Simulating deterministic connection handshakes for high-reliability backend systems.
 
-### 3. Performance Engineering
-* **Member Initializer Lists:** Utilized for $O(1)$ initialization, bypassing unnecessary default construction cycles—critical for embedded industrial controllers.
-* **Doxygen Documentation:** Adheres to industry-standard `/** @brief */` formatting, facilitating automated technical audits common in EU-based engineering (Siemens/Bosch).
 
-## 📊 Technical Complexity Analysis
-* **Time Complexity (Search):** $O(\log n)$ via Binary Search Tree (std::set).
-* **Time Complexity (Creation):** $O(1)$ (Constant time).
-* **Memory Strategy:** Deterministic stack-allocation with static registry overhead.
 
 ---
 
-## 🚀 Deployment Instructions
-1. **Compile:** `g++ -O3 DigitalAssetManagement.cpp -o asset_sim.exe`
-2. **Execute:** `./asset_sim.exe`
+## 🏛️ Architectural Pillars
+
+### 1. RAII & Lifecycle Management
+Resources (simulated network handles) are tied strictly to the object's stack lifetime. 
+* **Static ID Generation:** $O(1)$ global counter via `static int nextId`.
+* **Deterministic Destruction:** Automatic cleanup triggered via scoped blocks `{ }`, eliminating manual memory management risks.
+
+### 2. Modular Build Systems (CMake)
+Implemented **CMake** to automate the compilation and linking phases. This ensures cross-platform compatibility and separates the "Contract" (Header) from the "Logic" (Implementation).
+
+
+
+---
+
+## 🚀 Execution Guide
+
+### Task 1: Asset Management
+```bash
+g++ -O3 DigitalAssetManagement.cpp -o asset_sim
+./asset_sim
