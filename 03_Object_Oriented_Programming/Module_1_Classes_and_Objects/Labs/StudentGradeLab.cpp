@@ -14,6 +14,7 @@ public:
     // Constructor
     Student(std::string studentName, int id) : name(studentName), studentId(id)
     {
+        
     }
 
     // Adding grades
