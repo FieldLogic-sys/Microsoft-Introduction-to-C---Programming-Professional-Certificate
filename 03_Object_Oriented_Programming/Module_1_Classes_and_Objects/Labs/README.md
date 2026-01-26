@@ -2,45 +2,41 @@
 ### Microsoft Introduction to C++ Programming | Module 1
 
 ## 📌 Strategic Overview
-This lab architected the **Real-World Entity Modeling System**, serving as a prototype for modular industrial simulation. The objective was to translate abstract hardware requirements into a rigid, memory-efficient C++ class structure. By modeling "Character" entities, we simulate the interaction between independent system nodes, ensuring that state transitions are handled through strictly defined, protected interfaces.
+This system architects a modular simulation for industrial entities, bridging high-level MBA-driven logic (integrity/security) with low-level MSCS-driven hardware control. It demonstrates a complete **Object Lifecycle Management** strategy, ensuring that every resource acquired is safely released.
+
+## 🛠 Architectural Definitions & Pillars
+
+### 1. RAII (Resource Acquisition Is Initialization)
+RAII is the core C++ paradigm where resource management is tied to object lifetime.
+* **Constructor (The Debut):** Initializes the system state. We utilize **Parameterized Constructors** with **Member Initializer Lists** for $O(1)$ efficiency.
+* **Destructor (The Final Bow):** Prefixed with `~`, this ensures that as objects go out of scope, the system "closes the curtain" cleanly, preventing memory leaks in persistent hardware environments.
 
 
 
-## 🛠 Architectural Pillars
+### 2. Constructor Archetypes
+* **Parameterized:** Tailors the entity (e.g., Mage vs. Knight) at the moment of allocation.
+* **Default:** Provides a baseline "Safe State" for the system if no parameters are provided.
+* **Copy:** Ensures state integrity when duplicating entity telemetry, utilized to prevent data corruption during object transfers.
 
-### 1. Data Encapsulation & Doxygen Documentation
-In industrial hardware (e.g., Gilbarco/Veeder-Root sensors), direct memory access is a security vulnerability. 
-* **Implementation:** All telemetry (`characterHealth`, `characterStrength`) is marked `private`. 
-* **Doxygen Standard:** To support automated documentation generation and "Auditor-Ready" code, I have implemented Doxygen-style comment blocks. This satisfies both the MSCS technical requirements and the European standard for self-documenting codebases.
-
-
-
-### 2. Constructor Efficiency (Hardware Layer)
-The system utilizes **Member Initializer Lists** for object construction. 
-* **Logic:** The use of the `:` initializer list ensures that members are constructed with their intended values immediately. 
-* **Optimization:** This reduces the instruction overhead compared to post-construction assignment, a critical optimization for low-latency, 1:10 Tier embedded systems.
-
-### 3. Non-Deterministic State Logic (Entropy Layer)
-Utilizing the `<random>` library, specifically `std::mt19937` (Mersenne Twister), we introduce "Real-World" entropy. This simulates the unpredictable nature of field hardware (jitter, environmental noise) while maintaining a mathematically uniform distribution of potential outcomes ($2^{19937}-1$ period).
+### 3. Data Encapsulation & Doxygen Documentation
+* **Telemetry Protection:** Private members shield the core registers from unauthorized external writes.
+* **Doxygen Standards:** Implemented industry-standard headers (`@brief`, `@param`) to facilitate automated technical audits, common in European engineering firms (e.g., Siemens, Bosch).
 
 
 
-## 📋 Lab Requirements Checklist
-- [x] **Entity Defined:** Modeled `Character` with distinct health and strength telemetry.
-- [x] **Constructor:** Implemented with member initializer lists and default arguments for flexible field deployment.
-- [x] **Encapsulation:** Protected internal state via `private` access specifiers.
-- [x] **Interface Interaction:** Orchestrated a combat loop in `main()` demonstrating object-to-object communication (`attack(Character&)`).
-- [x] **Documentation:** Applied Doxygen-style headers for European professional standards.
+## 📋 Success Checklist
+- [x] **RAII Implementation:** Lifecycle-managed entity initialization and destruction.
+- [x] **Constructor Logic:** Applied parameterized initialization for custom field deployment.
+- [x] **Destructor Integration:** Verified automatic resource cleanup.
+- [x] **Encapsulation:** Protected telemetry with public interfaces.
 
-## 📊 Performance Metrics (Big O)
-The computational complexity for the primary simulation operations is as follows:
-* **Object Instantiation:** $O(1)$
-* **Attack/Damage Calculation:** $O(1)$
-* **Simulation Loop:** $O(n)$ where $n$ is the number of rounds until a terminal state (`health <= 0`) is reached.
+## 📊 Technical Complexity
+* **Big O (Instantiation):** $O(1)$
+* **Big O (Destruction):** $O(1)$
+* **Memory Management:** Deterministic stack-allocation.
 
 ---
 
 ## 🚀 Deployment Instructions
-1. **Source:** `Real-World_Entity_Modeling_lab.cpp`
-2. **Compiler:** `g++ -O3` (Enable maximum optimization for production-grade simulation)
-3. **Execution:** `./realworld.exe`
+1. **Compile:** `g++ -O3 Real-World_Entity_Modeling_lab.cpp -o entity_sim.exe`
+2. **Execute:** `./entity_sim.exe`
