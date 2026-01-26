@@ -1,45 +1,52 @@
-*.exe
-**/02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/json/
+# =================================================================
+# GLOBAL PROJECT IGNORES
+# =================================================================
 
-
-# Ignore all build folders and their contents
+# Build Directories (Recursive)
 build/
 **/build/
+**/CMakeFiles/
 
-# Ignore executables and compiler artifacts
-*.out
+# Executables and Linker Output
 *.exe
+*.out
+*.app
+resource_test
 ConfigManager
 
-
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
+# Object and Dependency Files
 *.o
 *.obj
+*.slo
+*.lo
+*.d
 
-# Linker output
-*.out
-*.exe
-*.app
-
-# CMake artifacts (Specific to your images)
+# =================================================================
+# CMAKE ARTIFACTS
+# =================================================================
 CMakeCache.txt
-CMakeFiles/
 CMakeScripts/
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 Makefile
-build/
-02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/CompleteExternalLibraryProject/simple_web
-02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/CompleteExternalLibraryProject/multi_scraper
-02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/CompleteExternalLibraryProject/multi_scraper
-02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/CompleteExternalLibraryProject/multi_scraper
+
+# =================================================================
+# DOCUMENTATION (DOXYGEN)
+# =================================================================
+html/
+latex/
+Doxyfile.bak
+*.tmp
+*.bak
+*.log
+
+# =================================================================
+# SPECIFIC MODULE ARTIFACTS
+# =================================================================
+**/02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/json/
 03_Object_Oriented_Programming/Module_1_Classes_and_Objects/lab1
 03_Object_Oriented_Programming/Module_1_Classes_and_Objects/SGlab
 03_Object_Oriented_Programming/Module_1_Classes_and_Objects/Labs/lab1
 03_Object_Oriented_Programming/Module_1_Classes_and_Objects/Labs/SGlab
+02_Intermediate_Techniques/Module_4_Libraries_and_GenAI/CompleteExternalLibraryProject/simple_web
