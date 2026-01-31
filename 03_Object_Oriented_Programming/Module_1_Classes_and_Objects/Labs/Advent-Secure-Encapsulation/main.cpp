@@ -54,13 +54,20 @@ public:
         c.attackStrength += 100;
         std::cout << "You have entered bersker mode. Get ready. Your attack has been increased to: " << attackStrength <<"." << std::endl;
     }
+    // Missing this is what caused my error
+    friend void berserkerMode(Character& c);
 };
 
+void berserkerMode(Character& c){
+        c.hitPoints = 150;
+        c.attackStrength += 100;
+        std::cout << "\n[!] "<< c.name << "You have entered bersker mode. Get ready. Your attack has been increased to: " << c.attackStrength <<"." << std::endl;
+    }
 int main()
 {
     Character programmer("FieldLogic-dev", 10, 10);
     programmer.displayInfo();
-    programmer.berskerAttack();
+    berserkerMode(programmer);
     programmer.displayInfo();
     return 0;
 }
