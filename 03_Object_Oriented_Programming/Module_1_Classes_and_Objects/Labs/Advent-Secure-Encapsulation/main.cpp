@@ -1,86 +1,54 @@
+/**
+ * @file main.cpp
+ * @brief Main execution loop and Security Audit suite.
+ */
+
 #include <iostream>
-#include <string>
+#include <cassert> // The "Security Guard"
+#include "Character.h"
 
-class Character
-{
-private:
-    std::string name;
-    int hitPoints;
-    int attackStrength;
+/**
+ * @brief Automated Functional Audit
+ * * Verifies that the encapsulation "Safety Valves" and the 
+ * "Damage Logic" are calibrated to technical specifications.
+ */
+void runSecurityAudit() {
+    std::cout << "--- STARTING SECURITY AUDIT ---" << std::endl;
+    Character testHero("AuditBot", 100, 20);
 
-public:
-    Character(std::string name, int hp, int attack) : name(name), hitPoints(hp), attackStrength(attack) {}
-    int getHitPoints() const { return hitPoints; }
-    int getAttackStrength() const { return attackStrength; }
+    // Test 1: Data Protection (Setter Boundary Test)
+    testHero.setHitPoints(999);
+    assert(testHero.getHitPoints() <= 100); 
+    std::cout << "[PASS] HP Safety Valve Active." << std::endl;
 
-    void setHitPoints(int hp)
-    {
-        if (hp < 0)
-        {
-            hp = 0;
-        }
-        else if (hp > 100)
-        {
-            hp = 100;
-        }
-        else
-            hitPoints = hp;
-    }
-    friend void berserkerAttack(Character &c);
+    // Test 2: Logic Integrity (Subtraction Accuracy)
+    testHero.setHitPoints(100);
+    testHero.takeDamage(40);
+    assert(testHero.getHitPoints() == 60);
+    std::cout << "[PASS] Damage Logic Consistent." << std::endl;
 
-    void setAttackStrength(int attack)
-    {
-        if (attack < 0)
-        {
-            attack = 0;
-        }
-        else
-        {
-            attackStrength = attack;
-        }
-    }
-    void displayInfo()
-    {
-        std::cout << "Name: " << name << ", HP: " << hitPoints
-                  << ", Attack: " << attackStrength << std::endl;
-    }
+    // Test 3: Privileged Access (Friend Function Test)
+    // Testing the %5 / Symmetry logic
+    berserkerMode(testHero);
+    assert(testHero.getHitPoints() == 150); // HP now exceeds the 100 limit
+    assert(testHero.getAttackStrength() == 120); // 20 + 100
+    std::cout << "[PASS] Administrative Override Verified." << std::endl;
 
-    // The Friend Fuction needs to be outside of the class which is why I had an error.
-    void berskerAttack(Character &c)
-    {
-        c.hitPoints = 150;
-        c.attackStrength += 100;
-        std::cout << "You have entered bersker mode. Get ready. Your attack has been increased to: " << attackStrength << "." << std::endl;
-    }
-    // Missing this is what caused my error
-    friend void berserkerMode(Character &c);
-};
-
-void berserkerMode(Character &c)
-{
-    c.hitPoints = 150;
-    c.attackStrength += 100;
-    std::cout << "\n[!] " << c.name << "You have entered bersker mode. Get ready. Your attack has been increased to: " << c.attackStrength << "." << std::endl;
+    std::cout << "--- AUDIT COMPLETE: ALL SYSTEMS SECURE ---\n" << std::endl;
 }
-int main()
-{
-    Character programmer("FieldLogic-dev", 10, 10);
-    programmer.displayInfo();
-    berserkerMode(programmer);
-    programmer.displayInfo();
 
-    // TEST A: Trying to bypass the Setter limit
-    std::cout << "\nAttempting to set HP to 999 via Setter..." << std::endl;
-    programmer.setHitPoints(999);
-    programmer.displayInfo(); // Should be capped at 100
-// TEST A: Trying to bypass the Setter limit
-std::cout << "\nAttempting to set HP to 999 via Setter..." << std::endl;
-programmer.setHitPoints(999); 
-programmer.displayInfo(); // Should be capped at 100
+int main() {
+    runSecurityAudit(); // "Pre-flight" verification
 
+    // Standard Operational Cycle
+    std::string name;
+    std::cout << "Enter Player Name: ";
+    std::cin >> name;
+    
+    Character player(name, 100, 15);
+    player.displayInfo();
+    berserkerMode(player); // Activate special mode
+    player.displayInfo();
 
-// TEST B: Trying to touch private data directly (The "Illegal" Move)
-// programmer.hitPoints = 500; 
-    // IDE Warning `member "Character::hitPoints" (declared at line 8) is inaccessible`
     return 0;
 }
