@@ -1,0 +1,5 @@
+SYSTEM: Memory Manager initialized
+[1769974234] ALLOC: 1024 bytes at 0x6176f1676910 [ARRAY]
+[1769974234] ALLOC: 4096 bytes at 0x6176f1676d70 [ARRAY]
+[1769974234] FREE: 1024 bytes from address 0x6176f1676910
+SYSTEM: Memory Manager shutting down
