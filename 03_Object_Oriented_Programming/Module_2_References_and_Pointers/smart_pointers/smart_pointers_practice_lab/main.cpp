@@ -49,5 +49,6 @@ int main() {
     mgr.takeOwnership(std::move(myServer));
     // TODO: Call mgr.checkServer()
     mgr.checkServer();
+    
     return 0;
 }
