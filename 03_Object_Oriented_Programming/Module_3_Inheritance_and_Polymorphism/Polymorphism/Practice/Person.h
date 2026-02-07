@@ -1,24 +1,30 @@
 #ifndef PERSON_H
 #define PERSON_H
 
-#include <string>
 #include <iostream>
+#include <string>
 
 class Person {
 protected:
     std::string name;
     std::string tool;
-
 public:
     Person(const std::string& n, const std::string& t) : name(n), tool(t) {}
-    virtual ~Person() {
-        std::cout << "[LOG] Memory cleared for: " << name << std::endl;
-    }
-
-    virtual void greet() const = 0; 
-
+    virtual ~Person() { std::cout << "[LOG] Cleanup: " << name << "\n"; }
+    virtual void greet() const = 0;
     std::string getName() const { return name; }
-    std::string getTool() const { return tool; }
+};
+
+class Technician : public Person {
+public:
+    using Person::Person;
+    void greet() const override { std::cout << "🔧 Tech " << name << " using " << tool << "\n"; }
+};
+
+class Guest : public Person {
+public:
+    using Person::Person;
+    void greet() const override { std::cout << "🎟️ Guest " << name << " has " << tool << "\n"; }
 };
 
 #endif
