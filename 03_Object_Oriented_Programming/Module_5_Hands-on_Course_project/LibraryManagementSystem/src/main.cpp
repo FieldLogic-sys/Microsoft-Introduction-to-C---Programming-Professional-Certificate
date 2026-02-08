@@ -20,13 +20,14 @@ int main() {
         std::cout << "1. Add New Entry" << std::endl;
         std::cout << "2. View Collection" << std::endl;
         std::cout << "3. Toggle Status (Read/Watched)" << std::endl;
-        std::cout << "4. Exit" << std::endl;
+        std::cout << "4. Filter by Type (Anime/Manga)" << std::endl; // New Menu Option
+        std::cout << "5. Exit" << std::endl;
         std::cout << "Selection: ";
 
         std::getline(std::cin, menuInput);
 
         if (menuInput.empty()) {
-            std::cout << "!! Selection cannot be empty. Please enter 1-4." << std::endl;
+            std::cout << "!! Selection cannot be empty. Please enter 1-5." << std::endl;
             continue;
         }
 
@@ -38,7 +39,6 @@ int main() {
             continue;
         }
 
-        // --- OPTION 1: ADD ENTRY ---
         if (choice == 1) {
             std::string typeInput;
             std::cout << "1. Anime\n2. Manga\nChoice: ";
@@ -58,8 +58,7 @@ int main() {
                 try { if (!epInput.empty()) eps = std::stoi(epInput); } 
                 catch (...) { eps = 0; }
 
-                // The ID is generated here: size + 1
-                myTracker.push_back(std::make_shared<Anime>(myTracker.size() + 1, name, studio, eps));
+                myTracker.push_back(std::make_shared<Anime>(name, studio, eps));
                 std::cout << ">> Anime added successfully!" << std::endl;
             }
             else if (typeInput == "2") {
@@ -76,15 +75,10 @@ int main() {
                 try { if (!volInput.empty()) vols = std::stoi(volInput); } 
                 catch (...) { vols = 0; }
 
-                // The ID is generated here: size + 1
-                myTracker.push_back(std::make_shared<Manga>(myTracker.size() + 1, name, author, vols));
+                myTracker.push_back(std::make_shared<Manga>(name, author, vols));
                 std::cout << ">> Manga added successfully!" << std::endl;
             }
-            else {
-                std::cout << "!! Invalid type selection. Returning to menu." << std::endl;
-            }
         }
-        // --- OPTION 2: VIEW COLLECTION ---
         else if (choice == 2) {
             std::cout << "\n--- Current Collection ---" << std::endl;
             if (myTracker.empty()) {
@@ -95,7 +89,6 @@ int main() {
                 }
             }
         }
-        // --- OPTION 3: TOGGLE STATUS (The new logic) ---
         else if (choice == 3) {
             if (myTracker.empty()) {
                 std::cout << "!! List is empty. Nothing to toggle." << std::endl;
@@ -103,27 +96,47 @@ int main() {
                 std::string idInput;
                 std::cout << "Enter ID to toggle status: ";
                 std::getline(std::cin, idInput);
-                
                 try {
                     int targetID = std::stoi(idInput);
                     bool found = false;
-
-                    // Search for the ID in our vector
                     for (auto& item : myTracker) {
                         if (item->getID() == targetID) {
-                            item->toggleStatus(); // Flips the boolean
-                            std::cout << ">> Status for '" << item->getTitle() << "' updated!" << std::endl;
+                            item->toggleStatus();
+                            std::cout << ">> Status updated!" << std::endl;
                             found = true;
                             break;
                         }
                     }
-                    if (!found) std::cout << "!! ID " << targetID << " not found." << std::endl;
-                } catch (...) {
-                    std::cout << "!! Invalid ID format. Please enter a number." << std::endl;
-                }
+                    if (!found) std::cout << "!! ID not found." << std::endl;
+                } catch (...) { std::cout << "!! Invalid ID format." << std::endl; }
             }
         }
-    } while (choice != 4); // Exit is now 4
+        // --- NEW FILTER LOGIC GOES HERE (Created by Gemini in full) ---
+        else if (choice == 4) {
+            std::cout << "Filter for: (1) Anime (2) Manga: ";
+            std::string filterInput;
+            std::getline(std::cin, filterInput);
+
+            std::cout << "\n--- Filtered Results ---" << std::endl;
+            bool foundAny = false;
+            for (const auto& item : myTracker) {
+                if (filterInput == "1") {
+                    if (std::dynamic_pointer_cast<Anime>(item)) {
+                        item->showEntryCard();
+                        foundAny = true;
+                    }
+                } 
+                else if (filterInput == "2") {
+                    if (std::dynamic_pointer_cast<Manga>(item)) {
+                        item->showEntryCard();
+                        foundAny = true;
+                    }
+                }
+            }
+            if (!foundAny) std::cout << "[No matching entries found]" << std::endl;
+        }
+
+    } while (choice != 5); // Exit condition updated to 5
 
     std::cout << "Exiting program. Mata ne!" << std::endl;
     return 0;
