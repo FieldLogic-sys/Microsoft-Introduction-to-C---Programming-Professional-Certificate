@@ -3,8 +3,8 @@
 
 // Implementation of the Constructor
 // We pass id and t up to the MediaEntry base class
-Anime::Anime(int id, std::string t, std::string stu, int eps)
-    : MediaEntry(id, t), studio(stu), episodeCount(eps) {
+Anime::Anime(std::string t, std::string stu, int eps)
+    : MediaEntry(t), studio(stu), episodeCount(eps) {
 }
 
 // Implementation of the showEntryCard logic

@@ -9,7 +9,7 @@ private:
 
 public:
     // Only the declaration (Blueprint)
-    Anime(int id, std::string t, std::string stu, int eps);
+    Anime(std::string t, std::string stu, int eps);
 
     // Only the declaration (Contract fulfillment)
     void showEntryCard() const override;

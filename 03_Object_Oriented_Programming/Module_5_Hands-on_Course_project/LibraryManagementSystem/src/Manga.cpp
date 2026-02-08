@@ -2,8 +2,8 @@
 #include <iostream>
 
 // The Implementation of the Constructor
-Manga::Manga(int id, std::string t, std::string auth, int vols)
-    : MediaEntry(id, t), author(auth), volumeCount(vols) {
+Manga::Manga(std::string t, std::string auth, int vols)
+    : MediaEntry(t), author(auth), volumeCount(vols) {
     // Logic can go here if needed
 }
 

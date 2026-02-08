@@ -9,7 +9,7 @@ private:
 
 public:
     // Only the declaration
-    Manga(int id, std::string t, std::string auth, int vols);
+    Manga(std::string t, std::string auth, int vols);
 
     // Only the declaration
     void showEntryCard() const override;
