@@ -38,13 +38,12 @@ Learning that `std::shared_ptr` is the modern way to handle pointers was a break
 The ability to have a `std::vector` of pointers to a base class and call `item->showEntryCard()`—knowing that the computer will automatically pick the correct version (Anime or Manga)—demonstrated the true power of the Virtual Table (VTable) in C++. Using the arrow operator (`->`) to dereference these pointers was a key syntactical takeaway.
 
 ---
-
 ## 📝 Future TODO List
-- [ ] **Data Persistence:** Implement file I/O (JSON or CSV) to save and load the collection between sessions.
-- [ ] **UI Enhancement:** Add ANSI escape codes for console coloring to differentiate between Anime (Blue) and Manga (Green) entries.
-- [ ] **Duplicate Validation:** Implement a check to prevent adding the same title multiple times to the `std::vector`.
-- [ ] **Strict Error Checking:** Enhance `typeInput` validation to provide explicit error messages for every invalid menu selection.
-- [ ] **API Integration:** Integrate with a third-party API (like Jikan or AniList) to automatically fetch cover images and detailed metadata.
+- [ ] **Remove Entry:** Implement logic to delete a specific ID from the vector.
+- [ ] **Data Persistence:** Implement file I/O (JSON or CSV) to save and load the collection.
+- [ ] **UI Enhancement:** Add ANSI escape codes for console coloring.
+- [ ] **Duplicate Validation:** Prevent adding the same title multiple times.
+- [ ] **API Integration:** Fetch metadata from Jikan or AniList.
 
 ---
 

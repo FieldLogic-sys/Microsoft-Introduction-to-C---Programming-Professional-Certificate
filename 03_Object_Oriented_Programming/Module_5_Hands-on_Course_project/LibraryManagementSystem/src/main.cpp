@@ -19,24 +19,26 @@ int main() {
         std::cout << "================================" << std::endl;
         std::cout << "1. Add New Entry" << std::endl;
         std::cout << "2. View Collection" << std::endl;
-        std::cout << "3. Exit" << std::endl;
+        std::cout << "3. Toggle Status (Read/Watched)" << std::endl;
+        std::cout << "4. Exit" << std::endl;
         std::cout << "Selection: ";
 
         std::getline(std::cin, menuInput);
 
         if (menuInput.empty()) {
-            std::cout << "!! Selection cannot be empty. Please enter 1, 2, or 3." << std::endl;
+            std::cout << "!! Selection cannot be empty. Please enter 1-4." << std::endl;
             continue;
         }
 
         try {
             choice = std::stoi(menuInput);
         } catch (...) {
-            std::cout << "!! Invalid input. Please enter a number (1, 2, or 3)." << std::endl;
-            choice = 0; // Reset choice to keep the loop going
+            std::cout << "!! Invalid input. Please enter a number." << std::endl;
+            choice = 0; 
             continue;
         }
 
+        // --- OPTION 1: ADD ENTRY ---
         if (choice == 1) {
             std::string typeInput;
             std::cout << "1. Anime\n2. Manga\nChoice: ";
@@ -45,59 +47,83 @@ int main() {
             if (typeInput == "1") {
                 std::string name, studio, epInput;
                 int eps = 0;
-
                 std::cout << "Enter Title: ";
                 std::getline(std::cin, name);
-
                 std::cout << "Studio: ";
                 std::getline(std::cin, studio);
                 if (studio.empty()) studio = "Unknown Studio";
 
                 std::cout << "Episodes: ";
                 std::getline(std::cin, epInput);
-                try {
-                    if (!epInput.empty()) eps = std::stoi(epInput);
-                } catch (...) {
-                    eps = 0;
-                }
+                try { if (!epInput.empty()) eps = std::stoi(epInput); } 
+                catch (...) { eps = 0; }
 
+                // The ID is generated here: size + 1
                 myTracker.push_back(std::make_shared<Anime>(myTracker.size() + 1, name, studio, eps));
                 std::cout << ">> Anime added successfully!" << std::endl;
             }
             else if (typeInput == "2") {
                 std::string name, author, volInput;
                 int vols = 0;
-
                 std::cout << "Enter Title: ";
                 std::getline(std::cin, name);
-
                 std::cout << "Author: ";
                 std::getline(std::cin, author);
                 if (author.empty()) author = "Unknown Author";
 
                 std::cout << "Volumes: ";
                 std::getline(std::cin, volInput);
-                try {
-                    if (!volInput.empty()) vols = std::stoi(volInput);
-                } catch (...) {
-                    vols = 0;
-                }
+                try { if (!volInput.empty()) vols = std::stoi(volInput); } 
+                catch (...) { vols = 0; }
 
+                // The ID is generated here: size + 1
                 myTracker.push_back(std::make_shared<Manga>(myTracker.size() + 1, name, author, vols));
                 std::cout << ">> Manga added successfully!" << std::endl;
             }
+            else {
+                std::cout << "!! Invalid type selection. Returning to menu." << std::endl;
+            }
         }
+        // --- OPTION 2: VIEW COLLECTION ---
         else if (choice == 2) {
             std::cout << "\n--- Current Collection ---" << std::endl;
             if (myTracker.empty()) {
                 std::cout << "[Your List is currently empty]" << std::endl;
             } else {
                 for (const auto &item : myTracker) {
-                    item->showEntryCard(); 
+                    item->showEntryCard();
                 }
             }
         }
-    } while (choice != 3);
+        // --- OPTION 3: TOGGLE STATUS (The new logic) ---
+        else if (choice == 3) {
+            if (myTracker.empty()) {
+                std::cout << "!! List is empty. Nothing to toggle." << std::endl;
+            } else {
+                std::string idInput;
+                std::cout << "Enter ID to toggle status: ";
+                std::getline(std::cin, idInput);
+                
+                try {
+                    int targetID = std::stoi(idInput);
+                    bool found = false;
+
+                    // Search for the ID in our vector
+                    for (auto& item : myTracker) {
+                        if (item->getID() == targetID) {
+                            item->toggleStatus(); // Flips the boolean
+                            std::cout << ">> Status for '" << item->getTitle() << "' updated!" << std::endl;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) std::cout << "!! ID " << targetID << " not found." << std::endl;
+                } catch (...) {
+                    std::cout << "!! Invalid ID format. Please enter a number." << std::endl;
+                }
+            }
+        }
+    } while (choice != 4); // Exit is now 4
 
     std::cout << "Exiting program. Mata ne!" << std::endl;
     return 0;

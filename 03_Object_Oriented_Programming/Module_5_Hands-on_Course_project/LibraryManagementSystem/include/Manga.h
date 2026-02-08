@@ -1,7 +1,6 @@
-#ifndef MANGA_H
-#define MANGA_H
-
+#pragma once
 #include "MediaEntry.h"
+#include <string>
 
 class Manga : public MediaEntry {
 private:
@@ -9,15 +8,9 @@ private:
     int volumeCount;
 
 public:
-    
-    Manga(int id, std::string t, std::string auth, int vols) 
-        : MediaEntry(id, t, "Manga"), author(auth), volumeCount(vols) {}
+    // Only the declaration
+    Manga(int id, std::string t, std::string auth, int vols);
 
-    void showEntryCard() const override {
-        std::cout << "--- MANGA ENTRY ---" << std::endl;
-        std::cout << "Title: " << title << " | Author: " << author << std::endl;
-        std::cout << "Volumes: " << volumeCount << " | Rating: " << userRating << "/10" << std::endl;
-    }
+    // Only the declaration
+    void showEntryCard() const override;
 };
-
-#endif
